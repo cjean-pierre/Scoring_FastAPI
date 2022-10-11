@@ -41,6 +41,3 @@ def new_apps_preprocessing(app_test_df):
         df[cols] = np.NAN
 
     return df
-
-
-
