@@ -23,6 +23,7 @@ def preprocess():
     prev_app_df = pd.read_csv(path / "Data" / "previous_application.csv")
 
     df = application_train_test(app_train_df)
+    dump(app_train_df, path / 'resources' / 'app_train.joblib')
 
     bureau = bureau_and_balance(bureau_df, bureau_balance_df)
     df = df.merge(bureau, how='left', on='SK_ID_CURR')

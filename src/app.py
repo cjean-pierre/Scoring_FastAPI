@@ -5,10 +5,10 @@ from fastapi import FastAPI
 from new_apps_preprocessing import new_apps_preprocessing
 from predict_model import PredictScore
 
-# Load and process new applications
+# Load new applications
 path = Path(__file__).parent
 app_test_df = pd.read_csv(path / "Data" / "application_test.csv")
-new_apps = new_apps_preprocessing(app_test_df)
+
 
 # load trained classifier
 classifier = PredictScore()
@@ -36,7 +36,8 @@ def get_name(name: str):
 
 
 @app.post('/predict')
-def predict(new_apps):
+def predict(app_test_df):
+    new_apps = new_apps_preprocessing(app_test_df)
     prediction = classifier.predict_default(new_apps)
     shap_values, exp_values = classifier.predict_shap(new_apps)
     image = classifier.shap_summary(new_apps)
@@ -47,7 +48,8 @@ def predict(new_apps):
         'new_apps_prediction': new_apps,
         'shap_values': shap_values,
         'expectation_values': exp_values,
-        'shap_summary': image
+        'shap_summary': image,
+        'new_apps_file': app_test_df
     }
 # 4. Run the API with uvicorn
 #    Will run on http://127.0.0.1:8000
