@@ -10,7 +10,8 @@ from joblib import dump
 
 
 def preprocess():
-    """ perform preprocessing of files and saves them as .joblib files"""
+    """ perform preprocessing of train applications, bureau, credit card,installments, pos, previous applications
+    files and save them as .joblib files"""
 
     # read source files
     path = Path(__file__).parent
@@ -55,4 +56,3 @@ def preprocess():
 
     feats = [f for f in df.columns if f not in ['TARGET', 'SK_ID_CURR']]
     dump(feats, path / 'resources' / 'feats.joblib')
-
