@@ -2,6 +2,7 @@ from pathlib import Path
 import re
 from application import *
 from joblib import load
+from preprocess import preprocess
 
 
 def new_apps_preprocessing(app_test_df):
@@ -10,7 +11,13 @@ def new_apps_preprocessing(app_test_df):
     # read and load source files
     path = Path(__file__).parent
 
-    train_df = load(path / 'resources' / 'train_set.joblib')
+    try:
+        train_df = load(path / 'resources' / 'train_set.joblib')
+    except FileNotFoundError:
+        print("Preprocessing has to be done : it will take about one minute")
+        preprocess()
+        train_df = load(path / 'resources' / 'train_set.joblib')
+
     bureau = load(path / 'resources' / 'bureau.joblib')
     prev_app = load(path / 'resources' / 'prev_app.joblib')
     pos = load(path / 'resources' / 'pos.joblib')
