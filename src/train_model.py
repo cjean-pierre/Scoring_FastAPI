@@ -3,7 +3,7 @@ from joblib import load
 from pathlib import Path
 from lightgbm import LGBMClassifier, early_stopping
 from sklearn.model_selection import train_test_split
-from preprocess import preprocess
+from src.preprocess import preprocess
 
 
 def train_model():

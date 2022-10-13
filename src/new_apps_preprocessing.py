@@ -1,8 +1,8 @@
 from pathlib import Path
 import re
-from application import *
+from src.application import *
 from joblib import load
-from preprocess import preprocess
+from src.preprocess import preprocess
 
 
 def new_apps_preprocessing(app_test_df):

@@ -1,6 +1,6 @@
 from pathlib import Path
 from joblib import load
-from train_model import train_model
+from src.train_model import train_model
 import numpy as np
 import matplotlib.colors
 import matplotlib.pyplot as plt

@@ -1,11 +1,11 @@
 from pathlib import Path
 import re
-from application import *
-from bureau import *
-from credit_card import *
-from prev_app import *
-from pos import *
-from installments import *
+from src.application import *
+from src.bureau import *
+from src.credit_card import *
+from src.prev_app import *
+from src.pos import *
+from src.installments import *
 from joblib import dump
 
 

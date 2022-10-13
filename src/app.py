@@ -2,12 +2,12 @@ import uvicorn
 from pathlib import Path
 import pandas as pd
 from fastapi import FastAPI
-from new_apps_preprocessing import new_apps_preprocessing
-from predict_model import PredictScore
+from src.new_apps_preprocessing import new_apps_preprocessing
+from src.predict_model import PredictScore
 
 # Load new applications
 path = Path(__file__).parent
-app_test_df = pd.read_csv(path / "Data" / "application_test.csv")
+
 
 
 # load trained classifier
@@ -36,7 +36,8 @@ def get_name(name: str):
 
 
 @app.post('/predict')
-def predict(app_test_df):
+def predict():
+    app_test_df = pd.read_csv(path / "Data" / "application_test.csv")
     new_apps = new_apps_preprocessing(app_test_df)
     prediction = classifier.predict_default(new_apps)
     shap_values, exp_values = classifier.predict_shap(new_apps)
