@@ -8,8 +8,6 @@ from src.predict_model import PredictScore
 # Load new applications
 path = Path(__file__).parent
 
-
-
 # load trained classifier
 classifier = PredictScore()
 
