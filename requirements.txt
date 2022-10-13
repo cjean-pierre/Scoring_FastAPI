@@ -1,4 +1,4 @@
-uvicorn
+uvicorn==0.18.3
 fastapi
 pandas
 joblib
