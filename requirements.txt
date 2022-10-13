@@ -3,8 +3,6 @@ fastapi
 pandas
 joblib
 numpy
-pillow
 shap
 matplotlib
-scikit-learn
-lightgbm
+pydantic
