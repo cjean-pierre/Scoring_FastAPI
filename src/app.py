@@ -1,7 +1,7 @@
 import pandas as pd
 import uvicorn
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from src.predict_model import PredictScore
 from src.client_app import ClientApp
 
@@ -34,16 +34,16 @@ def get_name(name: str):
 
 
 @app.post('/predict')
-def predict(new_app: ClientApp):
-    app_data = new_app.dict()
-    app_df = pd.DataFrame.from_dict(app_data)
+def predict(new_app: dict = Body({})):
+
+    app_df = pd.read_json(new_app, orient='records')
     prediction = classifier.predict_default(app_df)
     shap_values, exp_values = classifier.predict_shap(app_df)
     app_df['PREDS'] = prediction
 
     return {
-        'new_apps_prediction': app_df,
-        'shap_values': shap_values,
+        'new_apps_prediction': app_df.to_json(orient='records'),
+        'shap_values': shap_values.to_json(orient='index'),
         'expectation_values': exp_values,
     }
 # 4. Run the API with uvicorn
