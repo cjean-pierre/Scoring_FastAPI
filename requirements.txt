@@ -6,3 +6,4 @@ numpy
 shap
 matplotlib
 pydantic
+lightgbm
