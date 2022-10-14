@@ -3,7 +3,6 @@ import uvicorn
 from pathlib import Path
 from fastapi import FastAPI, Body
 from src.predict_model import PredictScore
-from src.client_app import ClientApp
 
 # Load new applications
 path = Path(__file__).parent
