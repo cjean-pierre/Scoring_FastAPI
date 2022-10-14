@@ -1,14 +1,11 @@
+import pandas as pd
 import uvicorn
 from pathlib import Path
-import pandas as pd
-from fastapi import FastAPI
-from new_apps_preprocessing import new_apps_preprocessing
-from predict_model import PredictScore
+from fastapi import FastAPI, Body
+from src.predict_model import PredictScore
 
 # Load new applications
 path = Path(__file__).parent
-app_test_df = pd.read_csv(path / "Data" / "application_test.csv")
-
 
 # load trained classifier
 classifier = PredictScore()
@@ -36,21 +33,32 @@ def get_name(name: str):
 
 
 @app.post('/predict')
-def predict(app_test_df):
-    new_apps = new_apps_preprocessing(app_test_df)
-    prediction = classifier.predict_default(new_apps)
-    shap_values, exp_values = classifier.predict_shap(new_apps)
-    image = classifier.shap_summary(new_apps)
+def predict(new_app: dict = Body({})):
 
-    new_apps['PREDS'] = prediction
+    app_df = pd.read_json(new_app, orient='records')
+    prediction = classifier.predict_default(app_df)
+    app_df['PREDS'] = prediction
 
     return {
-        'new_apps_prediction': new_apps,
-        'shap_values': shap_values,
-        'expectation_values': exp_values,
-        'shap_summary': image,
-        'new_apps_file': app_test_df
+        'new_apps_prediction': app_df.to_json(orient='records'),
     }
+
+# Route for model prediction, make a prediction from the passed
+#    new apps data and return shap values
+
+
+@app.post('/shap')
+def predict(new_app: dict = Body({})):
+
+    app_df = pd.read_json(new_app, orient='records')
+    shap_values, exp_values = classifier.predict_shap(app_df)
+
+    return {
+        'shap_values': shap_values.to_json(orient='index'),
+        'expectation_values': exp_values,
+    }
+
+
 # 4. Run the API with uvicorn
 #    Will run on http://127.0.0.1:8000
 
