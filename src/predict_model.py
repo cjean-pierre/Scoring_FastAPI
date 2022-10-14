@@ -1,6 +1,6 @@
 from pathlib import Path
 from joblib import load
-
+from lightgbm import LGBMClassifier
 
 class PredictScore:
 
