@@ -33,7 +33,7 @@ def get_name(name: str):
 
 
 @app.post('/predict')
-def predict(new_app: dict = Body({})):
+def predict(new_app=Body(...)):
 
     app_df = pd.read_json(new_app, orient='records')
     prediction = classifier.predict_default(app_df)
@@ -48,14 +48,14 @@ def predict(new_app: dict = Body({})):
 
 
 @app.post('/shap')
-def predict(new_app: dict = Body({})):
+def shap(new_app=Body(...)):
 
     app_df = pd.read_json(new_app, orient='records')
     shap_values, exp_values = classifier.predict_shap(app_df)
 
     return {
-        'shap_values': shap_values.to_json(orient='index'),
-        'expectation_values': exp_values,
+        'shap_values': pd.DataFrame(shap_values).to_json(orient='index'),
+        'expectation_values': pd.DataFrame(exp_values).to_json(orient='index'),
     }
 
 
